@@ -2,7 +2,7 @@ import asyncio
 
 async def run_forever():
     await asyncio.sleep(5)
-    await asyncio.create_subprocess_shell("uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000")
+    await asyncio.create_subprocess_shell("daphne config.asgi:application -b 0.0.0.0 --port 8000")
     while True:
         await asyncio.sleep(0.1)
 
