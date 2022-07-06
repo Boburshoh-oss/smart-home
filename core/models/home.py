@@ -6,10 +6,8 @@ class Home(models.Model):
     """
     Home model.
     """
-
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=100)
-    owner = models.ForeignKey(to='core.User', on_delete=models.CASCADE, related_name='home')
+    owner = models.ForeignKey(to='core.User', on_delete=models.CASCADE,blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

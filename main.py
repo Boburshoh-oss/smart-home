@@ -13,6 +13,8 @@ async def main():
     await asyncio.create_subprocess_shell("python manage.py migrate")
     await asyncio.sleep(1)
     await asyncio.create_subprocess_shell("python manage.py runworker mqtt")    
+    await asyncio.sleep(1)
+    await asyncio.create_subprocess_shell("python manage.py runwebsocketclient")    
 
 if __name__ == "__main__":
     asyncio.run(main())

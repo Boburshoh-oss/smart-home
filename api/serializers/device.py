@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Device, Product, Home, Channel
+from core.models import Device, Product, Home, Channel,Sensor
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -13,13 +13,12 @@ class DeviceSerializer(serializers.ModelSerializer):
         queryset=Home.objects.all(),
         slug_field='name'
     )
-    channels = serializers.SlugRelatedField(
-        read_only=False,
-        many=True,
-        queryset=Channel.objects.all(),
-        slug_field='name'
-    )
-
+    
+    channels = serializers.PrimaryKeyRelatedField(many=True, queryset=Channel.objects.all())
+    sensors = serializers.PrimaryKeyRelatedField(many=True, queryset=Sensor.objects.all())
     class Meta:
         model = Device
         fields = '__all__'
+        read_only_fields = ('owner',)
+    
+    

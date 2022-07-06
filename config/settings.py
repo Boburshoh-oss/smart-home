@@ -1,7 +1,6 @@
 
-from pathlib import Path
+from datetime import timedelta
 import os
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -11,7 +10,7 @@ SECRET_KEY = 'django-insecure-fn(!*gb1%i3vsm$8w4#gc*zlhy+l_zvxjw_a2gbeqr0tcevd_)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -24,10 +23,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    "rest_framework.authtoken",
     'core',
     'channels',
+    'drf_yasg',
+    "websocketclient",
+    
 ]
 
+WEBSOCKETCLIENT_HOST = os.environ.get('WEBSOCKETCLIENT_HOST',"localhost:8000/ws/")
+# WEBSOCKETCLIENT_AUTH_HEADER = "token"
+WEBSOCKETCLIENT_MESSAGE_HANDLER = "config.handlers.message_handler"
 AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
@@ -45,7 +51,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(os.getenv("REDIS_HOST",'localhost'), os.getenv("REDIS_PORT",6379))],
+            "hosts": [(os.getenv("REDIS_HOST",'redis'), os.getenv("REDIS_PORT",6379))],
         },
     },
 }
@@ -60,7 +66,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,8 +92,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
         'USER': os.environ.get("POSTGRES_USER", "postgres"),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", ""),
-        'HOST': os.environ.get("POSTGRES_HOST",'127.0.0.1'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", "postgres"),
+        'HOST': os.environ.get("POSTGRES_HOST",'db'),
         'PORT': os.environ.get("POSTGRES_PORT",5432),
     }
 }
@@ -112,12 +118,44 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(weeks=64),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=200),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(weeks=64),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(weeks=200),
+}
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
@@ -130,7 +168,37 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'config/static')
 
+STATICFILES_DIRS=[(os.path.join(BASE_DIR,'config/staticfiles'))]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type':'apiKey',
+            'name':'Authorization',
+            'in':'header'
+        }
+    }
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Asia/Tashkent"
+CELERY_TASK_TRACK_STARTED = True
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_IMPORTS = [
+    'core.tasks',
+]
+# CELERYBEAT_SCHEDULE = {
+#     'my_scheduled_job': {
+#         'task': 'run_scheduled_jobs', # the same goes in the task name
+#         'schedule': timedelta(seconds=30),
+#     },
+# }

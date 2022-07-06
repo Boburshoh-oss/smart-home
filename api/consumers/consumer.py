@@ -1,61 +1,90 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.db import database_sync_to_async
-from core.models import Channel, Status
+from core.models import Channel
 import logging
-
+from asgiref.sync import sync_to_async
+from core.models.condition import SmartCondition
+from core.models.sensor import Sensor
+import asyncio
+# from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 logger = logging.getLogger('consumer')
-
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = "topic"
-        self.room_group_name = "topic_group"
-
+        user = self.scope["user"]
+        self.room_name =  "topic_room"
+        if user.username:
+            self.room_group_name = 'topic_group'
+        else:
+            self.room_group_name =  "adashib_qol"
+        # self.room_group_name = 'chat_%s' % self.room_name
+        logger.info("Resived from group name: {}".format(self.room_group_name))
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-
+        
+        
         await self.channel_layer.group_add("mqttgroup", self.channel_name)
-
-        await self.channel_layer.send(
-            "mqtt",
-            {
-                "type": "mqtt_subscribe",
-                "topic": "topic",
-                "group": "mqttgroup",
-            },
-        )
+        
+        # sensors = await database_sync_to_async(Sensor.objects.filter)(owner=user)
+        
+        
+        # sensors = await self.get_all_sensors(user)
+        
+        subscribes = await self.get_all_channels_sensors(user)
+        logger.info("Sensors: {}".format(subscribes))
+        
+        
+        
+        try:
+            tasks = [self.channel_layer.send(url[0],url[1]) for url in subscribes]
+            await asyncio.wait(tasks)
+        except Exception as e:
+            logger.error(e)
+            
         await self.accept()
         logger.info("Connected to websocket")
+        logger.info("Qanaqa user bu: {}".format(user.username))
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-
+        
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        logger.info("Message received: {}".format(message))
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat_message", "message": message}
-        )
-        # Publish on mqtt too
-        await self.channel_layer.send(
-            "mqtt",
-            {
-                "type": "mqtt_publish",
-                "publish": {  # These form the kwargs for mqtt.publish
-                    "topic": "topic_out",
-                    "payload": message,
-                    "qos": 2,
-                    "retain": False,
+        
+        user = self.scope["user"]
+        logger.info("Message user from websocket: {}".format(user))
+        try:
+            text_data_json = json.loads(text_data)
+        
+        # type = text_data_json["type"]
+            message = text_data_json["message"]
+            topic = text_data_json["topic"]
+            logger.info("Message received from websocket: {}".format(message))
+            logger.info("Topic received from websocket: {}".format(topic))
+            # Send message to room group
+            await self.channel_layer.group_send(
+                self.room_group_name, {"type": "chat_message", "message": message}
+            )
+            
+            # Publish on mqtt too
+            await self.channel_layer.send(
+                "mqtt",
+                {
+                    "type": "mqtt_publish",
+                    "publish": {  # These form the kwargs for mqtt.publish
+                        "topic": topic,
+                        "payload": message,
+                        "qos": 2,
+                        "retain": False,
+                    },
                 },
-            },
-        )
-
+            )
+        except:
+            pass
+     
+           
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
-
+        
         # Send message to WebSocket
         # await self.send(text_data=json.dumps({"message": message}))
 
@@ -64,22 +93,115 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         topic = message["topic"]
         payload = message["payload"]
+        
+        user = self.scope["user"]
+        logger.info("Received message from mqtt: {},topic:{}".format(payload,topic))
+        #from mqtt status 1 or 0 save database
+        
+        await self.channel_mqtt(payload,topic)
+        #from mqtt save database
+        
+        await self.sensor_mqtt(payload,topic)
+        # chan = await database_sync_to_async(self.get_channel)()
+        # if payload == "ON" or payload == b'ON':
+        #     # chan.status__id = 2
+        #     # chan.status_id = 2
+        #     chan.status = await database_sync_to_async(Status.objects.get)(status='on')
+        # else:
+        #     chan.status = await database_sync_to_async(Status.objects.get)(status='off')
+        #     # chan.status__id = 1
+        #     # chan.status_id = 1
 
-        logger.info("Received message from mqtt: {}".format(payload))
-
-        chan = await database_sync_to_async(self.get_channel)()
-
-        if payload == "ON" or payload == b'ON':
-            chan.status = await database_sync_to_async(Status.objects.get)(status='on')
-        else:
-            # chan.status = await database_sync_to_async(Status.objects.get)(status='off')
-            chan.status__id = 2
-            chan.status_id = 2
-
-        await database_sync_to_async(chan.save)()
+        # await database_sync_to_async(chan.save)()
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": payload}))
 
-    def get_channel(self):
-        return Channel.objects.get(name='light')
+    #from user to device switch on or off
+    @sync_to_async
+    def channel_mqtt(self, message,topic):
+        logger.info(f"{message}/{topic} channel_mqtt")
+        try:
+            topic = str(topic)[1:]
+            channel = Channel.objects.get(topic_name = topic)   
+            # logger.info("Received channel from base: {}".format(channel))
+            if message == 0:
+                state = False
+                channel.state = state
+            elif message == 1:
+                state = True
+                channel.state = state
+            
+            channel.save()
+        except Exception as e:
+            logger.error(e)
+        
+        
+
+    
+    @sync_to_async
+    def sensor_mqtt(self, payload,  topic):
+        logger.info(f"{payload}/{topic} sensor_mqtt")
+        try:
+            topic = str(topic)[1:]
+            smart_conditions = SmartCondition.objects.filter(condition__timer=None,condition__sensor_status__sensor__topic_name=topic)
+            for sc in smart_conditions:
+                a = sc.condition.sensor_status.above
+                b = sc.condition.sensor_status.below
+                if int(payload) > a or int(payload) < b:
+                    channels = sc.channel.all()
+                    for channel in channels:
+                        channel.state = sc.status
+                        channel.save()
+                        
+            # for sensor_state in smart_conditions:
+            #     if sensor_state.condtion.sensor_status.sensor.topic_name == topic:
+                    
+        except Exception as e:
+            logger.error(e)
+        try:
+            topic = str(topic)[1:]
+            sensor = Sensor.objects.get(topic_name=topic)
+            
+            sensor.state = payload
+            
+            sensor.save()
+        except Exception as e:
+            logger.error(e)
+    
+    @sync_to_async
+    def get_all_channels_sensors(self,user):
+        subscribes = []
+        try:
+            
+            sensors = Sensor.objects.all()
+            for sensor in sensors:
+                subscribes.append([
+                "mqtt",
+                {
+                    "type": "mqtt_subscribe",
+                    "topic": f"1{sensor.topic_name}",
+                    "group": "mqttgroup",
+                },
+            ])
+        except Exception as e:
+            
+            logger.error(f"{e} sensor topilmadi")
+        try: 
+            
+            channels = Channel.objects.all()
+            for channel in channels:
+                subscribes.append([
+                    "mqtt",
+                    {
+                        "type": "mqtt_subscribe",
+                        "topic": f"1{channel.topic_name}",
+                        "group": "mqttgroup",
+                    },
+                ])
+        except Exception as e:
+            
+            logger.error(f"{e} channel topilmadi")
+        return subscribes
+        
+

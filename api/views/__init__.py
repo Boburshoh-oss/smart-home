@@ -1,7 +1,8 @@
-from .user import UserViewSet
-from .room import RoomViewSet
-from .home import HomeViewSet
-from .channel import ChannelViewSet
-from .device import DeviceViewSet
+from .user import UserRegisterView
+from .home import HomeListCreateAPIView, HomeDetailAPIView
+from .channel import ChannelListCreateAPIView,ChannelDetailAPIView
+from .device import DeviceListCreateAPIView,DeviceDetailAPIView
+from .sensor import SensorListCreateAPIView,SensorDetailAPIView
 from .product import ProductViewSet
-from .sensor import SensorViewSet
+from .condition import SmartConditionListCreateApiView, SmartConditionRetrieveApiView
+from .chat import index, room

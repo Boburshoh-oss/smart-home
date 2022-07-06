@@ -39,6 +39,38 @@ services:
       - server
     volumes:
       - ./:/app
+    restart: always
+
+  celery:
+    build: 
+      context: .
+      dockerfile: devops/Dockerfile
+    command: celery -A config worker -l info
+    volumes:
+      - ./:/app
+
+    depends_on:
+      - db
+      - redis
+    links:
+     - redis:redis
+     - db
+
+  celery-beat:
+    build: 
+      context: .
+      dockerfile: devops/Dockerfile
+    command: celery -A config beat -l info
+    volumes:
+      - ./:/app
+    
+    depends_on:
+      - redis
+    links:
+     - redis:redis
+     - db
+
+
 
 volumes:
   db:
