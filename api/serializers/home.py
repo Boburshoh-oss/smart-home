@@ -6,5 +6,5 @@ class HomeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Home
-        fields = ['name','created_at','owner']
-        read_only_fields = ('id', 'created_at','owner')
+        fields = "__all__"
+        read_only_fields = ('created_at','owner')
