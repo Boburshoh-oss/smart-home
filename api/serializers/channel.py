@@ -7,7 +7,7 @@ class ChannelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Channel
         fields = '__all__'
-        read_only_fields = ('id', 'created_at','owner', 'updated_at')
+        read_only_fields = ('id', 'created_at','owner', 'updated_at','topic_name','state')
     
     def create(self, validated_data):
         product_abilty = validated_data['device'].product.num_of_channels
