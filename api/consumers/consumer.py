@@ -6,6 +6,8 @@ from asgiref.sync import sync_to_async
 from core.models.condition import SmartCondition
 from core.models.sensor import Sensor
 import asyncio
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 # from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 logger = logging.getLogger('consumer')
 
@@ -101,7 +103,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_mqtt(payload,topic)
         #from mqtt save database
         
-        await self.sensor_mqtt(payload,topic)
+        await self.sensor_mqtt(payload,topic,user)
         # chan = await database_sync_to_async(self.get_channel)()
         # if payload == "ON" or payload == b'ON':
         #     # chan.status__id = 2
@@ -113,9 +115,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         #     # chan.status_id = 1
 
         # await database_sync_to_async(chan.save)()
-
+        sensor_or_channel = await self.get__channel_or_sensor(topic)
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({"message": payload}))
+        await self.send(text_data=json.dumps({"message": payload,"result":sensor_or_channel.id}))
 
     #from user to device switch on or off
     @sync_to_async
@@ -140,19 +142,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     
     @sync_to_async
-    def sensor_mqtt(self, payload,  topic):
+    def sensor_mqtt(self, payload,  topic,user):
         logger.info(f"{payload}/{topic} sensor_mqtt")
+        topic = str(topic)[1:]
         try:
-            topic = str(topic)[1:]
             smart_conditions = SmartCondition.objects.filter(condition__timer=None,condition__sensor_status__sensor__topic_name=topic)
-            for sc in smart_conditions:
-                a = sc.condition.sensor_status.above
-                b = sc.condition.sensor_status.below
-                if int(payload) > a or int(payload) < b:
-                    channels = sc.channel.all()
-                    for channel in channels:
-                        channel.state = sc.status
-                        channel.save()
+            if user.username:
+                pass
+            else:
+                for sc in smart_conditions:
+                    a = sc.condition.sensor_status.above
+                    b = sc.condition.sensor_status.below
+                    if int(payload) > a or int(payload) < b:
+                        channels = sc.channel.all()
+                        sana = 0
+                        for channel in channels:
+                            sana += 1
+                            notification = {
+                                            "type": "mqtt_publish",
+                                            "publish": {  # These form the kwargs for mqtt.publish
+                                                "topic": channel.topic_name,
+                                                "payload": f"{sc.status},{sana}",
+                                                "qos": 2,
+                                                "retain": False,
+                                            },
+                                        }
+                            async_to_sync(self.channel_layer.send)("mqtt", notification)
                         
             # for sensor_state in smart_conditions:
             #     if sensor_state.condtion.sensor_status.sensor.topic_name == topic:
@@ -160,11 +175,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(e)
         try:
-            topic = str(topic)[1:]
             sensor = Sensor.objects.get(topic_name=topic)
-            
-            sensor.state = payload
-            
+            sensor.state += f" {payload}"
+            array_state = sensor.state.split()
+            if len(array_state)>10:
+                del array_state[0]
+            sensor.state = ' '.join(array_state)
             sensor.save()
         except Exception as e:
             logger.error(e)
@@ -203,5 +219,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
             
             logger.error(f"{e} channel topilmadi")
         return subscribes
+    
+    
+    @sync_to_async
+    def get__channel_or_sensor(self,topic):
+            topic = str(topic)[1:]
+            sensor = None
+            try:
+                sensor = Sensor.objects.get(topic_name = topic)
+            except Exception as e:
+                logger.error(e)
+            try:
+                sensor = Channel.objects.get(topic_name = topic)
+            except Exception as e:
+                logger.error(e)
+            # logger.info("Received channel from base: {}".format(channel))
+            return sensor  
+        
+        
+        
+             
+        
+    # def get_sensor(self,topic):
+    #     return Sensor.objects.get(topic_name=topic)
         
 
