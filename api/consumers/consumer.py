@@ -162,7 +162,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                                             "type": "mqtt_publish",
                                             "publish": {  # These form the kwargs for mqtt.publish
                                                 "topic": channel.topic_name,
-                                                "payload": f"{sc.status},{sana}",
+                                                "payload": f"{channel.topic_name},{sana}",
                                                 "qos": 2,
                                                 "retain": False,
                                             },

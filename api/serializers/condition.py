@@ -1,20 +1,20 @@
 from rest_framework import serializers
 from core.models import SmartCondition, Condition, SensorState
-from api.serializers.sensor import SensorSerializer
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 class SensorStateSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorState
         fields = '__all__'
 
-class ConditionSerializer(serializers.ModelSerializer):
-    timer=serializers.TimeField(format='%H:%M')
-    sensor_status = SensorStateSerializer()
+class ConditionSerializer(WritableNestedModelSerializer):
+    timer=serializers.TimeField(format='%H:%M',default=None)
+    sensor_status = SensorStateSerializer(default=None)
     class Meta:
         model = Condition
         fields = '__all__'
         
-class SmartConditionSerializer(serializers.ModelSerializer):
+class SmartConditionSerializer(WritableNestedModelSerializer):
     condition = ConditionSerializer()
     class Meta:
         model = SmartCondition
