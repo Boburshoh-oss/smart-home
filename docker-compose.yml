@@ -70,7 +70,16 @@ services:
      - redis:redis
      - db
 
-
+  nginx:
+    restart: always
+    depends_on:
+        - app
+    build:
+        context: ./nginx
+        dockerfile: Dockerfile.dev
+    ports:
+        - 8080:80
+    
 
 volumes:
   db:
