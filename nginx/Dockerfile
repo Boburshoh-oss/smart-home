@@ -1,2 +1,2 @@
 FROM nginx
-COPY default.conf /etc/nginx/sites-enabled/ 
+COPY default.conf /etc/nginx/sites-available/ 
