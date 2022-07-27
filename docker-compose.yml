@@ -71,7 +71,8 @@ services:
      - db
 
   nginx:
-    build: ./nginx
+    build:
+      dockerfile: nginx/Dockerfile
     ports:
       - "80:80"
 
