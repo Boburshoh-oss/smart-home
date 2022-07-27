@@ -71,14 +71,19 @@ services:
      - db
 
   nginx:
-    restart: always
-    depends_on:
-        - app
-    build:
-        context: ./nginx
-        dockerfile: Dockerfile.dev
+    build: ./nginx
     ports:
-        - 8080:80
+      - "80:80"
+
+    environment:
+      - NGINX_PORT=80
+      - DAPHNE_HOST=app
+      - DAPHEN_PORT=8000
+    depends_on:
+      - app
+    links:
+      - app
+    
     
 
 volumes:
