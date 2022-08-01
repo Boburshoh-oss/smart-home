@@ -61,7 +61,6 @@ CHANNEL_LAYERS = {
 MQTT_HOST = os.environ.get('MQTT_HOST', 'localhost')
 MQTT_USER = os.environ.get("MQTT_USER", "")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", "")
-logger.info(f"exported {MQTT_HOST},{MQTT_USER},{MQTT_PASSWORD}")
 
 ROOT_URLCONF = 'config.urls'
 
@@ -170,7 +169,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'config/static')
 
-STATICFILES_DIRS=[(os.path.join(BASE_DIR,'config/staticfiles'))]
+STATICFILES_DIRS=[(os.path.join(BASE_DIR,'config/static'))]
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
