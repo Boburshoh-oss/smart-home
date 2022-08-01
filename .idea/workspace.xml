@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3fe3fa05-00ee-4b42-b5c9-2a7440882802" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/api/consumers/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/consumers/consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/channel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/device.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/device.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/room.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/room.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/sensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/sensor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/serializers/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/serializers/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/channel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/device.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/device.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/room.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/room.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/sensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/sensor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/channel.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/channel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/device.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/device.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/home.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/home.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/room.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/sensor.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/sensor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0002_channel_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0003_home_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0004_product_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0005_room_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0006_status_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0007_sensor_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/sample_migration_structure/0008_device_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/devops/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/devops/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2BW5rA4bjZvOV4houGpBkNcSyzi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
+  </component>
+  <component name="RunManager">
+    <configuration name="smart-home" type="Python.DjangoServer" factoryName="Django server">
+      <module name="smart-home" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3fe3fa05-00ee-4b42-b5c9-2a7440882802" name="Changes" comment="" />
+      <created>1657009199769</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1657009199769</updated>
+      <workItem from="1657009201646" duration="437000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
