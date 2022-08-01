@@ -1,3 +1,3 @@
 FROM nginx
-COPY nginx/default.conf /etc/nginx/sites-available/ 
+COPY nginx/default.conf /etc/nginx/conf.d/ 
 RUN echo "Copy nginx file"
