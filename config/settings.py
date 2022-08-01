@@ -1,4 +1,5 @@
 
+from asyncio.log import logger
 from datetime import timedelta
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -60,6 +61,7 @@ CHANNEL_LAYERS = {
 MQTT_HOST = os.environ.get('MQTT_HOST', 'localhost')
 MQTT_USER = os.environ.get("MQTT_USER", "")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD", "")
+logger.info(f"exported {MQTT_HOST},{MQTT_USER},{MQTT_PASSWORD}")
 
 ROOT_URLCONF = 'config.urls'
 
