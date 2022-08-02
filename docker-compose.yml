@@ -40,7 +40,7 @@ services:
       - server
     volumes:
       - ./:/app
-      - static_volume:/static
+      - static_volume: app/static
     restart: always
 
   celery:
@@ -65,7 +65,7 @@ services:
     command: celery -A config beat -l info
     volumes:
       - ./:/app
-      - static_volume:/static
+      - static_volume: app/static
     
     depends_on:
       - redis
@@ -80,7 +80,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - static_volume:/static
+      - static_volume: app/static
     depends_on:
       - app
     links:
