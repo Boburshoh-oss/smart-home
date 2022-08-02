@@ -40,6 +40,7 @@ services:
       - server
     volumes:
       - ./:/app
+      - static_volume:/backend/static
     restart: always
 
   celery:
@@ -78,7 +79,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - static_volume:/home/app/web/staticfiles
+      - static_volume:/backend/static
     depends_on:
       - app
     links:
