@@ -78,7 +78,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./backend/languages/static:/backend/static
+      - static_volume:/home/app/web/staticfiles
     depends_on:
       - app
     links:
