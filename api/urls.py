@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from api.views import (ChannelListCreateAPIView, ChannelDetailAPIView,
                         SmartConditionListCreateApiView,SmartConditionRetrieveApiView,
-                       ProductViewSet, HomeListCreateAPIView, UserRegisterView, HomeDetailAPIView)
+                       ProductViewSet, HomeListCreateAPIView, UserRegisterView,UserDetailUpdateView,DescriptionListCreateApiView, HomeDetailAPIView)
 from api.views.device import DeviceDetailAPIView, DeviceListCreateAPIView
 from api.views.sensor import SensorDetailAPIView, SensorListCreateAPIView
 
@@ -31,5 +31,7 @@ urlpatterns = [
     path('smartconditions/', SmartConditionListCreateApiView.as_view()),
     path('smartconditions/<int:pk>/', SmartConditionRetrieveApiView.as_view()),
     # path('product/', ProductViewSet.as_view()),
-    path('register/', UserRegisterView.as_view())
+    path('register/', UserRegisterView.as_view()),
+    path('me/<int:pk>/', UserDetailUpdateView.as_view()),
+    path('description/',DescriptionListCreateApiView.as_view())
 ]

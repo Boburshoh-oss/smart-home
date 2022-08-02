@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'django-insecure-fn(!*gb1%i3vsm$8w4#gc*zlhy+l_zvxjw_a2gbeqr0tcevd_)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -170,7 +170,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS=[(os.path.join(BASE_DIR,'static'))]
+STATICFILES_DIRS=[(os.path.join(BASE_DIR,'static'))]
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

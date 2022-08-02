@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import SmartCondition, Condition, SensorState
+from core.models import SmartCondition, Condition, SensorState, Description
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 class SensorStateSerializer(serializers.ModelSerializer):
@@ -18,5 +18,11 @@ class SmartConditionSerializer(WritableNestedModelSerializer):
     condition = ConditionSerializer()
     class Meta:
         model = SmartCondition
+        fields = '__all__'
+        read_only_fields = ('id', 'created_at','owner')
+
+class DescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Description
         fields = '__all__'
         read_only_fields = ('id', 'created_at','owner')

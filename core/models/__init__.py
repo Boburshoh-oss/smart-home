@@ -4,4 +4,4 @@ from .channel import Channel
 from .home import Home
 from .product import Product
 from .sensor import Sensor
-from .condition import SmartCondition,Condition ,SensorState
+from .condition import SmartCondition,Condition ,SensorState, Description

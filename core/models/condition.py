@@ -28,3 +28,13 @@ class SensorState(models.Model):
     below = models.IntegerField()
     def __str__(self):
         return f"{self.above} <{self.sensor}< {self.below}"
+
+
+class Description(models.Model):
+    owner = models.ForeignKey(to='core.User', on_delete=models.CASCADE,blank=True,null=True)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.owner.username}"
