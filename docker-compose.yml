@@ -31,7 +31,8 @@ services:
       dockerfile: devops/Dockerfile
     ports:
       - "8000:8000"
-    
+    expose:
+      - 8000
     env_file:
       - .env
     depends_on:
@@ -40,7 +41,8 @@ services:
       - server
     volumes:
       - ./:/app
-      
+      - static_volume:/static
+     
       
     restart: always
 
@@ -83,11 +85,12 @@ services:
     depends_on:
       - app
     volumes:
-      - static:/var/www/static
+      - static_volume:/static
     links:
       - app
     
 
 volumes:
+  static_volume:
   db:
     driver: local
