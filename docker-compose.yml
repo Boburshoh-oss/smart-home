@@ -41,7 +41,7 @@ services:
       - server
     volumes:
       - ./:/app
-      - static_volume:/static
+      - static_volume:/app/staticfiles
      
       
     restart: always
@@ -85,7 +85,7 @@ services:
     depends_on:
       - app
     volumes:
-      - static_volume:/static
+      - static_volume:/app/staticfiles
     links:
       - app
     
