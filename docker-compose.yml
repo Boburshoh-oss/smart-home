@@ -65,8 +65,6 @@ services:
     command: celery -A config beat -l info
     volumes:
       - ./:/app
-      - ./static:/app/static
-      
     
     depends_on:
       - redis
@@ -83,13 +81,11 @@ services:
     
     depends_on:
       - app
-    volumes:
-      - /app/static:/var/www/html/static
     links:
       - app
     
 
 volumes:
-  static:
+
   db:
     driver: local
