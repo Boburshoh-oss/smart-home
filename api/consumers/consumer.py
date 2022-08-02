@@ -99,11 +99,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = self.scope["user"]
         logger.info("Received message from mqtt: {},topic:{}".format(payload,topic))
         #from mqtt status 1 or 0 save database
-        
-        await self.channel_mqtt(payload,topic)
-        #from mqtt save database
-        
-        await self.sensor_mqtt(payload,topic,user)
+        if user.username:
+            pass
+        else:
+            await self.channel_mqtt(payload,topic)
+            #from mqtt save database
+            
+            await self.sensor_mqtt(payload,topic,user)
         # chan = await database_sync_to_async(self.get_channel)()
         # if payload == "ON" or payload == b'ON':
         #     # chan.status__id = 2
@@ -175,13 +177,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(e)
         try:
-            sensor = Sensor.objects.get(topic_name=topic)
-            sensor.state += f" {payload}"
-            array_state = sensor.state.split()
-            if len(array_state)>10:
-                del array_state[0]
-            sensor.state = ' '.join(array_state)
-            sensor.save()
+            if user.username:
+                pass
+            else:
+                sensor = Sensor.objects.get(topic_name=topic)
+                sensor.state += f" {payload}"
+                array_state = sensor.state.split()
+                if len(array_state)>10:
+                    del array_state[0]
+                sensor.state = ' '.join(array_state)
+                sensor.save()
         except Exception as e:
             logger.error(e)
     
