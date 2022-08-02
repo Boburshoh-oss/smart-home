@@ -9,6 +9,7 @@ class UserRegisterApiSerializer(serializers.Serializer):
         fields = "__all__"
 
 class UserRegisterSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     token = serializers.CharField(max_length=64,read_only=True)
     email = serializers.EmailField(max_length=255)
     first_name = serializers.CharField(max_length=50)
