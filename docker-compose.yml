@@ -82,12 +82,12 @@ services:
     
     depends_on:
       - app
-   
+    volumes:
+      - static:/var/www/static
     links:
       - app
     
 
 volumes:
-
   db:
     driver: local
