@@ -86,8 +86,8 @@ services:
     links:
       - app
     
-    
 
 volumes:
+  static_volume:
   db:
     driver: local
