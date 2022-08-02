@@ -77,6 +77,8 @@ services:
       dockerfile: nginx/Dockerfile
     ports:
       - "80:80"
+    volumes:
+      - ./backend/languages/static:/backend/static
     depends_on:
       - app
     links:
