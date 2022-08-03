@@ -15,6 +15,15 @@ class UserDetailUpdateView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class OwnUserView(generics.ListAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+    def get_queryset(self):
+        profile = User.objects.filter(username=self.request.user.username)
+        return profile
     
 class UserLoginView(views.APIView):
     def post(self,request):

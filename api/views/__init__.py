@@ -1,4 +1,4 @@
-from .user import UserRegisterView, UserDetailUpdateView
+from .user import UserRegisterView, UserDetailUpdateView, OwnUserView
 from .home import HomeListCreateAPIView, HomeDetailAPIView
 from .channel import ChannelListCreateAPIView,ChannelDetailAPIView
 from .device import DeviceListCreateAPIView,DeviceDetailAPIView
